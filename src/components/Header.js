@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from "./Header.module.scss";
 import { Link, NavLink } from 'react-router-dom';
-import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
+import { FaShoppingCart, FaTimes, } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 
 
@@ -81,12 +81,15 @@ const Header = () => {
                                 <NavLink to="/login" className={activeLink}>
                                     Login
                                 </NavLink>
+                                <NavLink to="/register" className={activeLink}>
+                                    Register
+                                </NavLink>
 
 
-                                <a href="#home" style={{ color: "#ff7722" }}>
+                                {/* <a href="#home" style={{ color: "#ff7722" }}>
                                     <FaUserCircle size={16} />
                                     Hi,
-                                </a>
+                                </a> */}
 
 
                                 <NavLink to="/order-history" className={activeLink}>
