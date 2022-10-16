@@ -27,8 +27,8 @@ const cart = (
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
-    const [displayName, setdisplayName] = useState("");
-    const [scrollPage, setScrollPage] = useState(false);
+    // const [displayName, setdisplayName] = useState("");
+    // const [scrollPage, setScrollPage] = useState(false);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
