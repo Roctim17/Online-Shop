@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from "../Style/auth.module.scss"
 import loginImg from '../assets/login.png'
 import { Link } from 'react-router-dom';
@@ -6,6 +6,13 @@ import { FaGoogle } from "react-icons/fa";
 import Card from '../components/Card';
 
 const Login = () => {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+const loginUser = (e)=>{
+    e.preventDefault();
+}
+
     return (
         <section className={`container ${styles.auth}`}>
 
@@ -16,10 +23,10 @@ const Login = () => {
             <div className={styles.form}>
                 <h2>Login</h2>
                 
-                <form >
-                    <input type="text" placeholder='Email' required />
-                    <input type="password" placeholder='Password' required />
-                    <button className='--btn --btn-primary --btn-block'>Login</button>
+                <form onSubmit={loginUser}>
+                    <input type="text" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input type="password" placeholder='Password' required value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <button type='submit' className='--btn --btn-primary --btn-block'>Login</button>
                     <div className={styles.links}>
                         <Link to='/reset'>Reset Password</Link>
                     </div>
