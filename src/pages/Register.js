@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from "../Style/auth.module.scss"
 import registerImg from "../assets/register.png";
 import Card from '../components/Card';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
+    const [email,setEmail]=useState("")
+    const [password,setPassword]=useState("")
+    const [cPassword,setCPassword]=useState("")
     return (
         <section className={`container ${styles.auth}`}>
             <Card>
