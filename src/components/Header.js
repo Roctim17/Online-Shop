@@ -41,6 +41,7 @@ useEffect(()=>{
         
           const uid = user.uid;
           setDisplayName(user.displayName)
+          console.log(uid)
         } else {
             setDisplayName('')
         }
