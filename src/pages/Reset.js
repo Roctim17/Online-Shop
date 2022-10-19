@@ -1,39 +1,64 @@
-import React from 'react';
+import { sendPasswordResetEmail } from 'firebase/auth';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import resetImg from "../assets/forgot.png";
 import Card from '../components/Card';
+import Loader from '../components/Loader';
+import { auth } from '../firebase/firebase.init';
 import styles from "../Style/auth.module.scss";
 
 const Reset = () => {
-    return (
-        <section className={`container ${styles.auth}`}>
+    const [email, setEmail] = useState("")
+    const [isLoading, setIsLoading] = useState(false)
 
-        <div className={styles.img}>
-            <img src={resetImg} alt="Login" width="400" />
-        </div>
-        <Card>
-        <div className={styles.form}>
-            <h2>Reset Password</h2>
-            
-            <form >
-                <input type="text" placeholder='Email' required />
-              
-                <button className='--btn --btn-primary --btn-block'>Reset Password</button>
-                <div className={styles.links}>
-                    <p>
-                        <Link to='/login'>Login</Link>
-                    </p>
-                    <p>
-                        <Link to='/register'>Register</Link>
-                    </p>
+    const resetPassword = (e) => {
+        e.preventDefault();
+        setIsLoading(true)
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                setIsLoading(false)
+                toast.success('Password reset email sent!')
+            })
+            .catch((error) => {
+                setIsLoading(false)
+                toast.error(error.message)
+            });
+
+    }
+
+    return (
+        <>
+        {isLoading && <Loader/>}
+            <section className={`container ${styles.auth}`}>
+
+                <div className={styles.img}>
+                    <img src={resetImg} alt="Login" width="400" />
+                </div>
+                <Card>
+                    <div className={styles.form}>
+                        <h2>Reset Password</h2>
+
+                        <form onSubmit={resetPassword}>
+                            <input type="text" placeholder='Email' required value={email} onChange={(e) => setEmail(e.target.value)} />
+
+                            <button type='submit' className='--btn --btn-primary --btn-block'>Reset Password</button>
+                            <div className={styles.links}>
+                                <p>
+                                    <Link to='/login'>Login</Link>
+                                </p>
+                                <p>
+                                    <Link to='/register'>Register</Link>
+                                </p>
+                            </div>
+                        </form>
+
+
+
                     </div>
-            </form>
-            
-        
-           
-        </div>
-        </Card>
-    </section>
+                </Card>
+            </section>
+        </>
     );
 };
 

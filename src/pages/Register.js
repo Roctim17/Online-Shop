@@ -30,6 +30,7 @@ const Register = () => {
                 setIsLoading(false)
                 toast.success('Registration Successful...')
                 navigate('/login')
+                console.log(user)
 
             })
             .catch((error) => {
