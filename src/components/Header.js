@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "./Header.module.scss";
 import { Link,  NavLink, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaTimes, } from "react-icons/fa";
+import { FaShoppingCart, FaTimes,FaUserCircle } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
 
@@ -31,9 +31,21 @@ const cart = (
 
 const Header = () => {
     const [showMenu, setShowMenu] = useState(false);
-    // const [displayName, setdisplayName] = useState("");
+    const [displayName, setDisplayName] = useState("");
     // const [scrollPage, setScrollPage] = useState(false);
     const navigate = useNavigate();
+
+useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+        
+          const uid = user.uid;
+          setDisplayName(user.displayName)
+        } else {
+            setDisplayName('')
+        }
+      });
+},[])
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -52,6 +64,8 @@ const Header = () => {
             toast.error(error.message);
           });
       };
+
+ 
 
     return (
         <header>
@@ -97,6 +111,10 @@ const Header = () => {
                             <NavLink to="/login" className={activeLink}>
                                 Login
                             </NavLink>
+                            <a href="#home" style={{ color: "#ff7722" }}>
+                    <FaUserCircle size={16} />
+                    Hi, {displayName}
+                  </a>
                             <NavLink to="/register" className={activeLink}>
                                 Register
                             </NavLink>
