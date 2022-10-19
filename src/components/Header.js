@@ -6,6 +6,8 @@ import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { SET_ACTIVE_USER } from '../redux/slice/authSlice';
 
 
 const logo = (
@@ -35,18 +37,26 @@ const Header = () => {
     // const [scrollPage, setScrollPage] = useState(false);
     const navigate = useNavigate();
 
+    const dispatch = useDispatch()
+
 useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
         if (user) {
         
-          const uid = user.uid;
-          setDisplayName(user.displayName)
-          console.log(uid)
+        //   const uid = user.uid;
+        //   setDisplayName(user.displayName)
+
+          dispatch(SET_ACTIVE_USER({
+            email:user.email,
+            userName:user.displayName,
+            userID:user.uid
+          }))
+        //   console.log(uid)
         } else {
             setDisplayName('')
         }
       });
-},[])
+},[dispatch])
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -114,7 +124,7 @@ useEffect(()=>{
                             </NavLink>
                             <a href="#home" style={{ color: "#ff7722" }}>
                     <FaUserCircle size={16} />
-                    Hi, {displayName}
+                    Hi, {displayName.slice(0,6)}
                   </a>
                             <NavLink to="/register" className={activeLink}>
                                 Register
