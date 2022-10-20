@@ -42,21 +42,23 @@ const Header = () => {
 useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
         if (user) {
-        
-        //   const uid = user.uid;
-        //   setDisplayName(user.displayName)
-
+        if(user.displayName == null){
+            const u1 = user.email.slice(0, -10);
+            const uName = u1.charAt(0).toUpperCase() + u1.slice(1)
+            setDisplayName(uName)
+        }else{
+            setDisplayName(user.displayName)
+        }
           dispatch(SET_ACTIVE_USER({
             email:user.email,
-            userName:user.displayName,
+            userName:user.displayName ? user.displayName : displayName,
             userID:user.uid
           }))
-        //   console.log(uid)
         } else {
             setDisplayName('')
         }
       });
-},[dispatch])
+},[dispatch,displayName])
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -124,7 +126,7 @@ useEffect(()=>{
                             </NavLink>
                             <a href="#home" style={{ color: "#ff7722" }}>
                     <FaUserCircle size={16} />
-                    Hi, {displayName.slice(0,6)}
+                    Hi, {displayName}
                   </a>
                             <NavLink to="/register" className={activeLink}>
                                 Register
