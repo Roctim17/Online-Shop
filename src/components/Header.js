@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styles from "./Header.module.scss";
-import { Link,  NavLink, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaTimes,FaUserCircle } from "react-icons/fa";
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { FaShoppingCart, FaTimes, FaUserCircle } from "react-icons/fa";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { SET_ACTIVE_USER } from '../redux/slice/authSlice';
+import { REMOVE_ACTIVE_USER, SET_ACTIVE_USER } from '../redux/slice/authSlice';
+import RequireAuth, { RequireAuthOut } from './RequireAuth';
 
 
 const logo = (
@@ -39,26 +40,27 @@ const Header = () => {
 
     const dispatch = useDispatch()
 
-useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-        if(user.displayName == null){
-            const u1 = user.email.slice(0, -10);
-            const uName = u1.charAt(0).toUpperCase() + u1.slice(1)
-            setDisplayName(uName)
-        }else{
-            setDisplayName(user.displayName)
-        }
-          dispatch(SET_ACTIVE_USER({
-            email:user.email,
-            userName:user.displayName ? user.displayName : displayName,
-            userID:user.uid
-          }))
-        } else {
-            setDisplayName('')
-        }
-      });
-},[dispatch,displayName])
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                if (user.displayName == null) {
+                    const u1 = user.email.substring(0, user.email.indexOf("@"));
+                    const uName = u1.charAt(0).toUpperCase() + u1.slice(1)
+                    setDisplayName(uName)
+                } else {
+                    setDisplayName(user.displayName)
+                }
+                dispatch(SET_ACTIVE_USER({
+                    email: user.email,
+                    userName: user.displayName ? user.displayName : displayName,
+                    userID: user.uid
+                }))
+            } else {
+                setDisplayName('')
+                dispatch(REMOVE_ACTIVE_USER())
+            }
+        });
+    }, [dispatch, displayName])
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -69,16 +71,16 @@ useEffect(()=>{
 
     const logoutUser = () => {
         signOut(auth)
-          .then(() => {
-            toast.success("Logout successfully.");
-            navigate("/");
-          })
-          .catch((error) => {
-            toast.error(error.message);
-          });
-      };
+            .then(() => {
+                toast.success("Logout successfully.");
+                navigate("/");
+            })
+            .catch((error) => {
+                toast.error(error.message);
+            });
+    };
 
- 
+
 
     return (
         <header>
@@ -120,34 +122,30 @@ useEffect(()=>{
                     </ul>
                     <div className={styles["header-right"]} onClick={hideMenu}>
                         <span className={styles.links}>
-
-                            <NavLink to="/login" className={activeLink}>
-                                Login
-                            </NavLink>
+                            <RequireAuthOut>
+                                <NavLink to="/login" className={activeLink}>
+                                    Login
+                                </NavLink>
+                            </RequireAuthOut>
+                            <RequireAuth>
                             <a href="#home" style={{ color: "#ff7722" }}>
-                    <FaUserCircle size={16} />
-                    Hi, {displayName}
-                  </a>
-                            <NavLink to="/register" className={activeLink}>
-                                Register
-                            </NavLink>
+                                <FaUserCircle size={16} />
+                                Hi, {displayName}
+                            </a>
+                            </RequireAuth>
 
 
-                            {/* <a href="#home" style={{ color: "#ff7722" }}>
-                                    <FaUserCircle size={16} />
-                                    Hi,
-                                </a> */}
-
-
-                            <NavLink to="/order-history" className={activeLink}>
-                                My Orders
-                            </NavLink>
-
-
-                            <NavLink to="/" onClick={logoutUser}>
-                                Logout
-                            </NavLink>
-
+                        
+                            <RequireAuth>
+                                <NavLink to="/order-history" className={activeLink}>
+                                    My Orders
+                                </NavLink>
+                            </RequireAuth>
+                            <RequireAuth>
+                                <NavLink to="/" onClick={logoutUser}>
+                                    Logout
+                                </NavLink>
+                            </RequireAuth>
                         </span>
                         {cart}
                     </div>
