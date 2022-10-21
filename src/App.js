@@ -8,7 +8,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import OrderHistory from "./pages/OrderHistory";
+import OrderHistory from "./pages/orderHistory/OrderHistory";
 import Reset from "./pages/Reset";
 
 function App() {
