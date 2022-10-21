@@ -13,6 +13,7 @@ import OrderDetails from "./pages/orderDetails/OrderDetails";
 import Reset from "./pages/Reset";
 import CheckoutSummary from "./components/checkoutSummary/CheckoutSummary";
 import CheckoutDetails from "./pages/checkout/CheckoutDetails";
+import ReviewProducts from "./components/reviewProducts/ReviewProducts";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/register' element={<Register />}></Route>
         <Route path='/reset' element={<Reset />}></Route>
         <Route path='/order-history' element={<OrderHistory />}></Route>
+        <Route path='/review-product/:id' element={<ReviewProducts />}></Route>
         <Route path="/order-details/:id" element={<OrderDetails />} />
         <Route path='/checkout' element={<CheckoutSummary />}></Route>
         <Route path="/checkout-details" element={<CheckoutDetails />} />
