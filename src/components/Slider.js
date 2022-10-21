@@ -27,7 +27,7 @@ const Slider = () => {
     useEffect(() => {
         if (autoScroll) {
             const auto =()=> {
-                slideInterval = setInterval(nextSlide, intervalTime)
+                slideInterval = setInterval(nextSlide, intervalTime);
             };
             auto()
         }
