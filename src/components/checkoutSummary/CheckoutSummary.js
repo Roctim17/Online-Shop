@@ -6,7 +6,7 @@ import {
   selectCartTotalAmount,
   selectCartTotalQuantity,
 } from "../../redux/slice/cartSlice";
-import Card from "../card/Card";
+import Card from "../Card";
 import styles from "./CheckoutSummary.module.scss";
 
 const CheckoutSummary = () => {
