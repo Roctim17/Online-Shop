@@ -8,7 +8,7 @@ const SingleProduct = ({ product }) => {
         <>
              <article class="itemblog">
                         <img src={imgUrl} alt=""/>
-                        <h4>{productName}</h4>
+                        <h4>{productName.slice(0,15)}</h4>
                         <h5>${price}</h5>
                         {/* <div class="rating">
                             <p><i class="fas fa-star full"></i></p>
